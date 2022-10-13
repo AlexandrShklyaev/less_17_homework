@@ -35,7 +35,7 @@ def menu() -> (str, int):
             req_text = f"\n AND adr.address LIKE '%{user_input}%'"
         case "5":
             req_text = ""
-            req_type = 1
+            req_type = 1 # группировка по пользователю
         case "6":
             return "stop", req_type
         case _:
