@@ -26,9 +26,9 @@ def disconntct_bd(connection, cursor) -> None:
     print("Соединение с PostgreSQL закрыто")
 
 
-def get_base_req() -> str:
+def get_base_req(req_type: int) -> str:
     """ возвращает текст базового запроса (все опубликованные записи )"""
-    req = """
+    req_text = """
         SELECT 
                   ads.id 
                 , ads.name
@@ -45,4 +45,18 @@ def get_base_req() -> str:
             ON a_a.address_id = adr.id
         WHERE ads.is_published is true
         """
-    return req
+    if req_type:
+        req_text = """
+            SELECT 
+                      aut.name 
+                    , sum(ads.price)
+            FROM ads as ads
+            LEFT JOIN author_address as a_a
+                ON ads.author_address_id = a_a.id
+            LEFT JOIN author as aut
+                ON a_a.author_id = aut.id
+            WHERE ads.is_published is true
+            GROUP BY aut.name
+            """
+
+    return req_text
